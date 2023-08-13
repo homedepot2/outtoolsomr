@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #FFA500;
+            color: black;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .search-result {
+            margin-top: 10px;
+        }
+        .result-button {
+            background-color: #f5f5f5;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Search Website</h1>
+    </header>
+    <div class="container">
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" placeholder="Search a competitor." aria-describedby="searchDesc">
+        <div id="searchResults" role="region" aria-live="polite" aria-atomic="true"></div>
+    </div>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        // Fetching mock data from the JSON file
+        fetch('lool.json')
+            .then(response => response.json())
+            .then(mockData => {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    searchResults.innerHTML = '';
+
+                    if (searchTerm.length === 0) {
+                        return;
+                    }
+
+                    const matchingResults = mockData.filter(result => result.toLowerCase().includes(searchTerm));
+
+                    if (matchingResults.length === 0) {
+                        searchResults.innerHTML = '<p>No results found.</p>';
+                    } else {
+                        matchingResults.forEach(result => {
+                            const resultButton = document.createElement('a');
+                            resultButton.classList.add('search-result', 'result-button');
+                            resultButton.textContent = result;
+                            resultButton.href = `details.html?result=${encodeURIComponent(result)}`;
+                            searchResults.appendChild(resultButton);
+                        });
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching mock data:', error);
+            });
+    </script>
+<div class="container">
+
+                <a href="index.html">Back to mainpage</a>
+            </div>
+
+</body>
+</html>
